@@ -1,6 +1,3 @@
-from Thompson.tree import *
-from Thompson.operations import *
-
 # to create the automata
 class Automata:
     def __init__(self, expresion):
@@ -14,17 +11,11 @@ class State:
         # transition list
         self.transition = []
         # is it accept transition
-        self.accept = True
+        self.accept = False
 
 class Handler:
     def __init__(self, symbol, id):
         self.symbol = symbol
         self.id = id
-
-def automata(tree, expresion):
-    data = Automata(expresion)
-    start, finish = transition_handler(tree, data)
-    
-    return data
 
         
