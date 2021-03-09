@@ -5,9 +5,8 @@ from Thompson.nfa import Automata
 from Thompson.nfa import Handler
 from Thompson.nfa import State
 from Thompson.tree import Tree
-# graphic
-from graphviz import Digraph
 
+# global variables
 OPERATORS = ['|', '*', '+', '?', '.', ')', '(']
 SPECIAL = ['*', '+', '?']
 EPSILON = "ε"
