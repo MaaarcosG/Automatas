@@ -7,9 +7,10 @@ Made by:
 
 ## Implemented Functions
 1. Thompson Construction algorithm implementation
-2. Subset Construction algorithm implementation or AFD Construction algorithm implementation given a regular expression r
-3. Simulation implementation of an AFN
-4. Implementation of simulation of an AFD
+2. Subset Construction algorithm 
+3. Implementation or AFD Construction algorithm implementation given a regular expression r
+4. Simulation implementation of an AFN
+5. Implementation of simulation of an AFD
 
 
 ## Contributing

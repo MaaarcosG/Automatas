@@ -1,0 +1,21 @@
+Automata Evaluada: a|b
+Simbolos del la expresión: a b 
+
+INICIAL 
+Aceptación: 0
+Con: ε--> 1
+Con: ε--> 3
+
+Aceptación: 1
+Con: a--> 2
+
+Aceptación: 2
+Con: ε--> 5
+
+Aceptación: 3
+Con: b--> 4
+
+Aceptación: 4
+Con: ε--> 5
+
+-> Aceptación: 5

@@ -1,10 +1,14 @@
 # create the tree in which you will be working
 class Tree(object):
-    def __init__(self):
-        self.left = None
-        self.right = None
-        self.data = None
-
-
-
-
+    def __init__(self, left = None, right = None, data = "" ):
+        self.left = left
+        self.right = right
+        self.data = data
+    
+    def __str__(self):
+        string = 'This: ' + self.data + '\n'
+        string = string + 'Left: ' + self.left.data + '\n'
+        if self.right:
+            string = string + 'Right: ' + self.right.data + '\n'
+        
+        return string

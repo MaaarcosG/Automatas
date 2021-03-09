@@ -225,16 +225,3 @@ def unique_symbol(tree, automata):
     first.transition.append(Handler(symbol, second.id))
     
     return first, second
-
-def graphic(automata, name):
-    dot = Digraph(name='Automata')
-    dot.attr(rankdir = 'LR')
-    for state in automata.state:
-        if state.accept:
-            dot.node(str(state.id), str(state.id), shape='doublecircle')
-        else:
-            dot.node(str(state.id), str(state.id))
-        for transition in state.transition:
-            dot.edge(str(state.id), str(transition.id), transition.symbol)
-    print(dot.source)
-    dot.render('Graph/'+name+'.gv', view=True)

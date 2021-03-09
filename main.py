@@ -1,13 +1,10 @@
 #from Thompson.prueba import Prueba
 
 from Thompson.operations import *
-
-exp = "(a*|b*).c"
+from utils import *
+exp = "a|b"
 
 data = regex(exp)
-print(data)
-
 automata = create_automata(data, exp)
-print(automata)
-
 graphic(automata, 'Thompson')
+save_txt(automata, 'Thompson')
