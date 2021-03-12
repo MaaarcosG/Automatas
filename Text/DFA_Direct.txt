@@ -1,0 +1,8 @@
+Automata Evaluada: (a*|b*).c
+Simbolos del la expresión: a b c 
+
+INICIAL 
+Aceptación: 0
+c--> 1
+
+Aceptación: 1

@@ -1,18 +1,23 @@
-# graphic
+'''
+    reference to grahipviz https://graphviz.readthedocs.io/en/stable/manual.html
+'''
 from graphviz import Digraph
 from DFA.dfa import get_symbol
 
 def graphic(automata, name):
     dot = Digraph(name='Automata')
     dot.attr(rankdir = 'LR')
+    
     for state in automata.state:
+        # print(state.id)
         if state.accept:
             dot.node(str(state.id), str(state.id), shape='doublecircle')
         else:
             dot.node(str(state.id), str(state.id))
         for transition in state.transition:
+            # print(transition.id)
             dot.edge(str(state.id), str(transition.id), transition.symbol)
-    dot.render('Graph/'+name+'.gv', view=True)
+    dot.render('Graph/'+name+'.gv', view=False)
 
 def save_txt(automata, name):
     data_save = open('Text/'+ name + '.txt', 'w')
