@@ -98,7 +98,7 @@ def regex(expresion):
 
 def create_automata(tree, expresion):
     data = Automata(expresion)
-    _, b = transition_handler(tree, data) 
+    _, b = transition_handler(tree, data)
     b.accept = True
     return data
 
@@ -111,12 +111,12 @@ def transition_handler(tree, automata):
         if(tree.data == '.'):
             # concatenation
             a, b = concatenation(tree, automata)
-        elif(tree.data == '*'):
-            # kleene
-            a, b = kleene(tree, automata)
         elif(tree.data == '|'):
             # symbol_or
             a, b = symbol_or(tree, automata)
+        elif(tree.data == '*'):
+            # kleene
+            a, b = kleene(tree, automata)
         elif(tree.data == '+'):
             # union
             a, b = union(tree, automata)
@@ -128,7 +128,9 @@ def transition_handler(tree, automata):
         a, b = unique_symbol(tree, automata)
     return a, b
 
+# represent . 
 def concatenation(tree, automata):
+    # print(tree.left.data)
     if tree.left.data in OPERATORS:
         a, b = transition_handler(tree.left, automata)
     else:
@@ -144,16 +146,17 @@ def concatenation(tree, automata):
     return a, b1
 
 def union(tree, automata):
+    # print(tree.left.data) 
     if tree.left.data in OPERATORS:
         a, b = transition_handler(tree.left, automata)
     else:
         a, b = unique_symbol(tree.left, automata)
 
-    tree = Tree()
-    tree.data = '*'
-    tree.left = tree.left
+    value = Tree()
+    value.data = '*'
+    value.left = tree.left
 
-    a1, b1 = kleene(tree, automata)
+    a1, b1 = kleene(value, automata)
 
     b.transition.append(Handler(EPSILON, a1.id))
 
@@ -162,7 +165,7 @@ def union(tree, automata):
 def symbol_or(tree, automata):
     start = State(len(automata.state), len(automata.state))
     automata.state.append(start)
-
+    # print(tree.left.data)
     if tree.left.data in OPERATORS:
         a, b = transition_handler(tree.left, automata)
     else:
@@ -183,9 +186,11 @@ def symbol_or(tree, automata):
 
     return start, end
 
+# return a* = a+ | EPSILON
 def kleene(tree, automata):
     start = State(len(automata.state), len(automata.state))
     automata.state.append(start)
+    # print(automata.state)
 
     if tree.left.data in OPERATORS:
         a, b = transition_handler(tree.left, automata)
@@ -202,16 +207,17 @@ def kleene(tree, automata):
 
     return start, end
 
+# return a? = a | EPSILON
 def symbol_question(tree, automata):
-    tree = Tree()
-    tree_2 = Tree()
+    value = Tree()
+    value_2 = Tree()
 
-    tree_2.data = EPSILON
-    tree.data = '|'
-    tree.left = tree.left
-    tree.right = tree_2
+    value_2.data = EPSILON
+    value.data = '|'
+    value.left = tree.left
+    value.right = value_2
 
-    a, b = transition_handler(tree, automata)
+    a, b = transition_handler(value, automata)
 
     return a, b
 
@@ -221,6 +227,6 @@ def unique_symbol(tree, automata):
     automata.state.append(first)
     second = State(len(automata.state), len(automata.state))
     automata.state.append(second)
-    first.transition.append(Handler(symbol, second.id))
+    first.transition.append(Handler(symbol, second.name))
     
     return first, second

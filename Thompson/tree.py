@@ -1,10 +1,16 @@
-# create the tree in which you will be working
+'''
+    create the tree in which you will be working
+    example: https://www.geeksforgeeks.org/print-binary-tree-2-dimensions/
+'''
 class Tree(object):
-    def __init__(self, left = None, right = None, data = "" ):
-        self.left = left
-        self.right = right
-        self.data = data
+    def __init__(self):
+        self.left = None
+        self.right = None
+        self.data = None
     
+    def printTree(self):
+        print(self.data)
+        
     def __str__(self):
         string = 'This: ' + self.data + '\n'
         string = string + 'Left: ' + self.left.data + '\n'

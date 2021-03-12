@@ -10,7 +10,6 @@ from Thompson.nfa import State
 from collections import Counter
 
 OPERATORS = ['|', '*', '+', '?', '.', ')', '(']
-SPECIAL = ['*', '+', '?']
 EPSILON = "ε"
 
 # return the regular expresion

@@ -1,6 +1,6 @@
 # graphic
 from graphviz import Digraph
-from DFA.dfa import *
+from DFA.dfa import get_symbol
 
 def graphic(automata, name):
     dot = Digraph(name='Automata')

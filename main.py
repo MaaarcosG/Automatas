@@ -1,10 +1,16 @@
 #from Thompson.prueba import Prueba
 
-from Thompson.operations import *
-from DFA.dfa import *
-from utils import *
+# data epsilon
+EPSILON = "ε"
 
+# some functions
+from Thompson.operations import regex, create_automata
+from DFA.dfa import subset
+from utils import graphic, save_txt
+
+#exp = '(a|'+EPSILON+').b.(a+).c?'
 exp = '(a*|b*).c'
+print(exp)
 
 data = regex(exp)
 automata = create_automata(data, exp)
