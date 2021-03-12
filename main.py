@@ -3,7 +3,7 @@ from Thompson.operations import regex, create_automata
 from DFA.dfa import subset
 from utils import graphic, save_txt, read_file
 from DFA.simulate import simulate
-from DFA_Direct.dfa_direct import sintetic_tree
+from DFA_Direct.dfa_direct import sintetic_tree, OPERATORS
 from collections import OrderedDict
 # data epsilon
 EPSILON = "ε"
@@ -14,7 +14,10 @@ while True:
     if menu == '1':
         print('-' * len(mensaje))
         expresion = input(mensaje)
-        print('La expresion ingresada fue: %s' % expresion)
+        symbol = set(expresion) - set(OPERATORS) - set(EPSILON) - set('()')
+        simbolos_dentro = [expresion[i] for i in range(0, len(expresion))]
+        print('La simbolos encontrados dentro de la expresión son: %s' % simbolos_dentro)
+        print('La expresion computarizada es: %s' % symbol)
         data = regex(expresion)
         automata = create_automata(data, expresion)
         # creamos el grafo junto a su txt
@@ -24,11 +27,17 @@ while True:
         save_txt(automata, 'Thompson')
 
         ## DEBERIA HACER LA SIMULACION
+        expresion_2 = input('Ingrese la expresion que quiere probar: ')
+        print('Evaluación de NFA')
+        simulate(automata, expresion_2)
     
     elif menu == '2':
         print('-' * len(mensaje))
         expresion = input(mensaje)
-        print('La expresion ingresada fue: %s' % expresion)
+        symbol = set(expresion) - set(OPERATORS) - set(EPSILON) - set('()')
+        simbolos_dentro = [expresion[i] for i in range(0, len(expresion))]
+        print('La simbolos encontrados dentro de la expresión son: %s' % simbolos_dentro)
+        print('La expresion computarizada es: %s' % symbol)
         data = regex(expresion)
         automata = create_automata(data, expresion)
         # DFA
@@ -40,8 +49,10 @@ while True:
     
     elif menu == '3':
         print('-' * len(mensaje))
-        expresion = input(mensaje)
-        print('La expresion ingresada fue: %s' % expresion)
+        symbol = set(expresion) - set(OPERATORS) - set(EPSILON) - set('()')
+        simbolos_dentro = [expresion[i] for i in range(0, len(expresion))]
+        print('La simbolos encontrados dentro de la expresión son: %s' % simbolos_dentro)
+        print('La expresion computarizada es: %s' % symbol)
         data = regex(expresion)
         # construcción directa
         direct_dfa = sintetic_tree(data, expresion)
