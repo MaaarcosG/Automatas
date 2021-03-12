@@ -43,5 +43,8 @@ def save_txt(automata, name):
             data_save.write(str(transition.symbol) + '--> ' + str(transition.id) + '\n')
     data_save.close()
         
-
-
+def read_file(path='expressions'):
+    file = open(path+'.txt', 'r')
+    line = file.readlines()
+    file.close()
+    return line
