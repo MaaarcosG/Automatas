@@ -1,4 +1,4 @@
-from DFA.dfa import get_symbol, exist_node, add_tree
+from DFA.dfa import exist_node, add_tree
 from Thompson.nfa import Automata, State, Handler
 from Thompson.tree import Tree
 from DFA_Direct.calculations import lastpos, firstpos, followpos, states_tree
@@ -11,6 +11,7 @@ def sintetic_tree(data_tree, expresion):
     value_tree = Tree()
     value_tree.data = '.'
     leaves = Tree()
+    # mark symbol
     leaves.data = '#'
     # add to the new tree
     value_tree.right = leaves
@@ -24,6 +25,8 @@ def sintetic_tree(data_tree, expresion):
     for position in tree:
         data[position] = []
     followpos(value_tree, data)
+    
+    #print(data.copy)
 
     tree_sintetic = direct(first, last, data, expresion)
 
@@ -35,38 +38,37 @@ def direct(first, last, data, expresion):
     automata.state.append(inicial)
     # print(automata.state.append(inicial))
 
-    # take the last postion
-    if (last[-1] in inicial.name):
+    # take the last position
+    if last[-1] in inicial.name:
         inicial.accept = True
-    
-    #symbol = get_symbol(expresion)
+
+    # symbols = get_symbol(expresion)
     symbols = []
     for symbol in expresion:
         if (symbol not in OPERATORS) and (symbol not in symbols) and (symbol != EPSILON):
             symbols.append(symbol)
-
+    
     for state in automata.state:
-        for i in symbol:
+        for i in symbols:
             value = []
-            for position in state.id:
-                if (position.data == i):
+            for position in state.name:
+                if position.data == i:
                     temp = data[position]
                     for j in temp:
                         if j not in value:
                             value.append(j)
-            if exist_node(automata, value) and (value != []):
+            if exist_node(automata, value) and value != []:
                 new_node = State(value, len(automata.state))
                 if last[-1] in value:
                     new_node.accept = True
                 automata.state.append(new_node)
                 state.transition.append(Handler(i, automata.state[-1].id))
-            elif (value != []):
+            elif value != []:
                 add = add_tree(automata, value)
-                if(add):
-                    state.transition.append(Handler(symbol, add.id))
+                if add:
+                    state.transition.append(Handler(i, add.id))
                 else:
-                    print('There is no node with' + value + 'de id')
+                    print('There ir no node with %s ' % value)
 
     return automata
-
-
+    

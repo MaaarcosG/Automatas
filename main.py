@@ -10,6 +10,7 @@ from utils import graphic, save_txt
 from DFA.simulate import simulate
 from DFA_Direct.dfa_direct import sintetic_tree
 
+
 #exp = '(a|'+EPSILON+').b.(a+).c?'
 exp = '(a*|b*).c'
 
@@ -18,12 +19,14 @@ print(exp)
 data = regex(exp)
 automata = create_automata(data, exp)
 
+'''
 graphic(automata, 'Thompson')
 save_txt(automata, 'Thompson')
 
 dfa = subset(automata, exp)
 graphic(dfa, 'DFA')
 save_txt(dfa, 'DFA')
+'''
 
 direct_dfa = sintetic_tree(data, exp)
 graphic(direct_dfa, 'DFA_Direct')

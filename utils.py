@@ -17,7 +17,7 @@ def graphic(automata, name):
         for transition in state.transition:
             # print(transition.id)
             dot.edge(str(state.id), str(transition.id), transition.symbol)
-    dot.render('Graph/'+name+'.gv', view=False)
+    dot.render('Graph/'+name+'.gv', view=True)
 
 def save_txt(automata, name):
     data_save = open('Text/'+ name + '.txt', 'w')

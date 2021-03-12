@@ -4,13 +4,13 @@ OPERATORS = ['|', '*', '+', '?', '.', ')', '(']
 # found the epsilon into tree
 def states_tree(tree):
     nodes = []
-    if tree.data not in OPERATORS and tree.data != EPSILON and tree.left == None and tree.right == None:
+    if (tree.data not in OPERATORS) and (tree.data != EPSILON) and (tree.left == None) and (tree.right == None):
         nodes.append(tree)
-    if tree.left != None:
+    if (tree.left != None):
         resp = states_tree(tree.left)
         for i in resp:
             nodes.append(i)
-    if tree.right != None:
+    if (tree.right != None):
         resp = states_tree(tree.right)
         for i in resp:
             nodes.append(i)
@@ -27,30 +27,27 @@ def nullable(tree):
         c2 = tree.right
         if nullable(c1) or nullable(c2):
             return True
-        else:
-            return False
     # n = c1*
-    if (tree.data == '*'):
+    elif (tree.data == '*'):
         return True
     # n = c1.c2
-    if (tree.data == '.'):
+    elif (tree.data == '.'):
         c1 = tree.left
         c2 = tree.right
-        if nullable(c1) or nullable(2):
+        if nullable(c1) and nullable(c2):
             return True
         else:
             return False
     # n+
-    if (tree.data == '+'):
+    elif (tree.data == '+'):
         c1 = tree.left
         if nullable(c1):
             return True
         else:
             return False
-    # n? 
-    if (tree.data == '?'):
+    # n?
+    elif (tree.data == '?'):
         return True
-    
     return False
 
 # firstpos in table 3.58 
@@ -62,17 +59,17 @@ def firstpos(tree):
             val = firstpos(tree.left)
             for i in val:
                 position.append(i)
-            if (nullable(tree.left)):
+            if nullable(tree.left):
                 c2 = firstpos(tree.right)
                 for i in c2:
                     position.append(i)
         # n = c1*
-        if (tree.data == '*'):
+        elif (tree.data == '*'):
             val = firstpos(tree.left)
             for i in val:
                 position.append(i)
-        # n = c1 | c2
-        if (tree.data == '|'):
+        # n = c1|c2
+        elif (tree.data == '|'):
             c1 = firstpos(tree.left)
             c2 = firstpos(tree.right)
             for i in c1:
@@ -89,9 +86,8 @@ def firstpos(tree):
             c1 = firstpos(tree.left)
             for i in c1:
                 position.append(i)
-    elif (tree.data != EPSILON):
-        position.append(EPSILON)
-        
+    elif tree.data != EPSILON:
+        position.append(tree)
     return position
 
 # no change with firstopos only interchange the childrens
@@ -101,19 +97,19 @@ def lastpos(tree):
         # n = c1.c2
         if (tree.data == '.'):
             val = lastpos(tree.right)
-            for i in val:
-                position.append(i)
-            if (nullable(tree.right)):
+            if nullable(tree.right):
                 c2 = lastpos(tree.left)
                 for i in c2:
                     position.append(i)
+            for i in val:
+                position.append(i)
         # n = c1*
-        if (tree.data == '*'):
+        elif (tree.data == '*'):
             val = lastpos(tree.left)
             for i in val:
                 position.append(i)
         # n = c1 | c2
-        if (tree.data == '|'):
+        elif (tree.data == '|'):
             c1 = lastpos(tree.left)
             c2 = lastpos(tree.right)
             for i in c1:
@@ -131,34 +127,33 @@ def lastpos(tree):
             for i in c1:
                 position.append(i)
     elif (tree.data != EPSILON):
-        position.append(EPSILON)
-        
+        position.append(tree)
     return position
 
 # followpos reference book table 3.9.4
-def followpos(tree, data):
-    if tree.data == ".":
-        temp1 = lastpos(tree.left)
-        temp2 = firstpos(tree.right)
-        for i in temp1:
-            for num in temp2:
-                data[i].append(num)
-    elif tree.data == "*":
-        temp1 = lastpos(tree)
-        temp2 = firstpos(tree)
-        for i in temp1:
-            for num in temp2:
-                data[i].append(num)
-    elif tree.data == "+":
-        temp1 = lastpos(tree.left)
-        temp2 = firstpos(tree.left)
-        for i in temp1:
-            for num in temp2:
-                data[i].append(num)
+def followpos(tree, table):
+    if (tree.data == '.'):
+        c1 = lastpos(tree.left)
+        c2 = firstpos(tree.right)
+        for i in c1:
+            for j in c2:
+                table[i].append(j)
+    elif (tree.data == '*'):
+        c1 = lastpos(tree)
+        c2 = firstpos(tree)
+        for i in c1:
+            for j in c2:
+                table[i].append(j)
+    elif (tree.data == '+'):
+        c1 = lastpos(tree.left)
+        c2 = firstpos(tree.left)
+        for i in c1:
+            for j in c2:
+                table[i].append(j)
 
-    if tree.left != None:
-        followpos(tree.left, data)
-    if tree.right != None:
-        followpos(tree.right, data)
+    if (tree.left != None):
+        followpos(tree.left, table)
+    if (tree.right != None):
+        followpos(tree.right, table)
 
 
