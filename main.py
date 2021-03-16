@@ -51,7 +51,7 @@ while True:
         ## DEBERIA HACER LA SIMULACION
         expresion_2 = input('Ingrese la expresion que quiere probar: ')
         print('EVALUACIÓN DE SUBCONJUNTOS')
-        evaluación = simulate(automata, expresion_2)
+        evaluación = simulate(dfa, expresion_2)
         print(evaluación)
     
     elif menu == '3':
