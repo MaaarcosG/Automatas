@@ -217,7 +217,7 @@ def symbol_question(tree, automata):
     value.left = tree.left
     value.right = value_2
 
-    a, b = transition_handler(value, automata)
+    a, b = symbol_or(value, automata)
 
     return a, b
 

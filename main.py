@@ -21,15 +21,16 @@ while True:
         data = regex(expresion)
         automata = create_automata(data, expresion)
         # creamos el grafo junto a su txt
-        print('CREANDO EL GRAFO....')
-        print('CREANDO EL TXT....')
+        # print('CREANDO EL GRAFO....')
+        # print('CREANDO EL TXT....')
         graphic(automata, 'Thompson')
         save_txt(automata, 'Thompson')
 
         ## DEBERIA HACER LA SIMULACION
         expresion_2 = input('Ingrese la expresion que quiere probar: ')
-        print('Evaluación de NFA')
-        simulate(automata, expresion_2)
+        print('EVALUACIÓN NFA')
+        evaluación = simulate(automata, expresion_2)
+        print(evaluación)
     
     elif menu == '2':
         print('-' * len(mensaje))
@@ -46,9 +47,18 @@ while True:
         print('CREANDO EL TXT....')
         graphic(dfa, 'DFA')
         save_txt(dfa, 'DFA')
+
+        ## DEBERIA HACER LA SIMULACION
+        expresion_2 = input('Ingrese la expresion que quiere probar: ')
+        print('EVALUACIÓN DE SUBCONJUNTOS')
+        evaluación = simulate(automata, expresion_2)
+        print(evaluación)
     
     elif menu == '3':
         print('-' * len(mensaje))
+        # expresion = '((a|b)*.((a|(b.b))*.'+EPSILON+'))'
+        expresion = input(mensaje)
+        # encontrar los simbolos
         symbol = set(expresion) - set(OPERATORS) - set(EPSILON) - set('()')
         simbolos_dentro = [expresion[i] for i in range(0, len(expresion))]
         print('La simbolos encontrados dentro de la expresión son: %s' % simbolos_dentro)
@@ -60,6 +70,12 @@ while True:
         print('CREANDO EL TXT....')
         graphic(direct_dfa, 'DFA_Direct')
         save_txt(direct_dfa, 'DFA_Direct')
+
+        ## DEBERIA HACER LA SIMULACION
+        expresion_2 = input('Ingrese la expresion que quiere probar: ')
+        print('METODO DIRECTO')
+        evaluación = simulate(direct_dfa, expresion_2)
+        print(evaluación)
 
     elif menu == '4':
         break
