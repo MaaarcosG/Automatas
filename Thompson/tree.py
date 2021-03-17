@@ -12,7 +12,7 @@ class Tree(object):
         print(self.data)
         
     def __str__(self):
-        string = 'This: ' + self.data + '\n'
+        string = 'Symbol: ' + self.data + '\n'
         string = string + 'Left: ' + self.left.data + '\n'
         if self.right:
             string = string + 'Right: ' + self.right.data + '\n'

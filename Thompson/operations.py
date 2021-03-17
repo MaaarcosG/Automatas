@@ -141,10 +141,13 @@ def concatenation(tree, automata):
     else:
         a1, b1 = unique_symbol(tree.right, automata)
 
-    b.transition.append(Handler(EPSILON, a1.id))
+    b.transition.append(Handler(EPSILON, a1.name))
+    # print(b)
 
     return a, b1
 
+# return a+ = a*a
+# return a+ = aa* a.a**
 def union(tree, automata):
     # print(tree.left.data) 
     if tree.left.data in OPERATORS:
@@ -157,8 +160,8 @@ def union(tree, automata):
     value.left = tree.left
 
     a1, b1 = kleene(value, automata)
-
-    b.transition.append(Handler(EPSILON, a1.id))
+    b.transition.append(Handler(EPSILON, a1.name))
+    print(b1)
 
     return a, b1
 
@@ -179,10 +182,10 @@ def symbol_or(tree, automata):
     end = State(len(automata.state), len(automata.state))
     automata.state.append(end)
 
-    start.transition.append(Handler(EPSILON, a.id))
-    start.transition.append(Handler(EPSILON, a1.id))
-    b.transition.append(Handler(EPSILON, end.id))
-    b1.transition.append(Handler(EPSILON, end.id))
+    start.transition.append(Handler(EPSILON, a.name))
+    start.transition.append(Handler(EPSILON, a1.name))
+    b.transition.append(Handler(EPSILON, end.name))
+    b1.transition.append(Handler(EPSILON, end.name))
 
     return start, end
 
@@ -199,11 +202,13 @@ def kleene(tree, automata):
     
     end = State(len(automata.state), len(automata.state))
     automata.state.append(end)
+    print('Start %s ' % start)
+    print('End %s ' % end)
 
-    start.transition.append(Handler(EPSILON, a.id))
-    start.transition.append(Handler(EPSILON, end.id))
-    b.transition.append(Handler(EPSILON, a.id))
-    b.transition.append(Handler(EPSILON, end.id))
+    start.transition.append(Handler(EPSILON, a.name))
+    start.transition.append(Handler(EPSILON, end.name))
+    b.transition.append(Handler(EPSILON, a.name))
+    b.transition.append(Handler(EPSILON, end.name))
 
     return start, end
 
@@ -227,6 +232,6 @@ def unique_symbol(tree, automata):
     automata.state.append(first)
     second = State(len(automata.state), len(automata.state))
     automata.state.append(second)
-    first.transition.append(Handler(symbol, second.name))
+    first.transition.append(Handler(symbol, second.id))
     
     return first, second

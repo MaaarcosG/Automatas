@@ -13,6 +13,11 @@ class State:
         # is it accept transition
         self.accept = False
 
+    def __str__(self):
+        string = 'Id: ' + str(self.name) + '\n'
+        return string
+
+
 class Handler:
     def __init__(self, symbol, id):
         self.symbol = symbol
