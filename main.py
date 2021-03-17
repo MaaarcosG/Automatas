@@ -1,7 +1,7 @@
 # some functions
 from Thompson.operations import regex, create_automata
 from DFA.dfa import subset
-from utils import graphic, save_txt, read_file
+from utils import graphic, save_txt, read_file, computarizable
 from DFA.simulate import simulate
 from DFA_Direct.dfa_direct import sintetic_tree, OPERATORS
 from collections import OrderedDict
@@ -14,18 +14,18 @@ while True:
     if menu == '1':
         print('-' * len(mensaje))
         expresion = input(mensaje)
-        symbol = set(expresion) - set(OPERATORS) - set(EPSILON) - set('()')
+        expresion_computabii = computarizable(expresion)
         simbolos_dentro = [expresion[i] for i in range(0, len(expresion))]
         print('La simbolos encontrados dentro de la expresión son: %s' % simbolos_dentro)
-        print('La expresion computarizada es: %s' % symbol)
-        data = regex(expresion)
-        automata = create_automata(data, expresion)
+        print('La expresion computarizada es: %s' % expresion_computabii)
+        data = regex(expresion_computabii)
+        automata = create_automata(data, expresion_computabii)
         # creamos el grafo junto a su txt
-        # print('CREANDO EL GRAFO....')
-        # print('CREANDO EL TXT....')
+        print('CREANDO EL GRAFO....')
+        print('CREANDO EL TXT....')
         graphic(automata, 'Thompson')
-        save_txt(automata, 'Thompson')
-
+        # save_txt(automata, 'Thompson')
+        
         ## DEBERIA HACER LA SIMULACION
         expresion_2 = input('Ingrese la expresion que quiere probar: ')
         print('EVALUACIÓN NFA')
@@ -35,12 +35,12 @@ while True:
     elif menu == '2':
         print('-' * len(mensaje))
         expresion = input(mensaje)
-        symbol = set(expresion) - set(OPERATORS) - set(EPSILON) - set('()')
+        expresion_computabii = computarizable(expresion)
         simbolos_dentro = [expresion[i] for i in range(0, len(expresion))]
         print('La simbolos encontrados dentro de la expresión son: %s' % simbolos_dentro)
-        print('La expresion computarizada es: %s' % symbol)
-        data = regex(expresion)
-        automata = create_automata(data, expresion)
+        print('La expresion computarizada es: %s' % expresion_computabii)
+        data = regex(expresion_computabii)
+        automata = create_automata(data, expresion_computabii)
         # DFA
         dfa = subset(automata, expresion)
         print('CREANDO EL GRAFO....')
@@ -58,14 +58,13 @@ while True:
         print('-' * len(mensaje))
         # expresion = '((a|b)*.((a|(b.b))*.'+EPSILON+'))'
         expresion = input(mensaje)
-        # encontrar los simbolos
-        symbol = set(expresion) - set(OPERATORS) - set(EPSILON) - set('()')
+        expresion_computabii = computarizable(expresion)
         simbolos_dentro = [expresion[i] for i in range(0, len(expresion))]
         print('La simbolos encontrados dentro de la expresión son: %s' % simbolos_dentro)
-        print('La expresion computarizada es: %s' % symbol)
-        data = regex(expresion)
+        print('La expresion computarizada es: %s' % expresion_computabii)
+        data = regex(expresion_computabii)
         # construcción directa
-        direct_dfa = sintetic_tree(data, expresion)
+        direct_dfa = sintetic_tree(data, expresion_computabii)
         print('CREANDO EL GRAFO....')
         print('CREANDO EL TXT....')
         graphic(direct_dfa, 'DFA_Direct')

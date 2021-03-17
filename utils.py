@@ -54,3 +54,36 @@ def read_file(path='expressions'):
     line = file.readlines()
     file.close()
     return line
+
+def verificate(char):
+    if char.isalpha():
+        return True
+    elif char == EPSILON:
+        return True
+    elif char.isnumeric():
+        return True
+    else:
+        return False
+
+def computarizable(expresion):
+    exp = ''
+    for i in range(0, len(expresion)):
+        if i == 0:
+            exp = exp + expresion[i]
+        elif verificate(expresion[i-1]) and verificate(expresion[i]):
+            exp = exp + '.' + expresion[i]
+        elif verificate(expresion[i-1]) and verificate(expresion) == '(':
+            exp = exp + '.' + expresion[i]
+        elif verificate(expresion[i]) and verificate(expresion[i-1]) == ')':
+            exp = exp + '.' + expresion[i]
+        elif expresion[i-1] == '*' and verificate(expresion[i]):
+            exp = exp + '.' + expresion[i]
+        elif expresion[i-1] == '*' and expresion[i] == '(':
+            exp = exp + '.' + expresion[i]
+        elif expresion[i-1] == ')' and expresion[i] == '(':
+            exp = exp + '.' + expresion[i]
+        elif expresion == '?':
+            exp = exp + '?'
+        else:
+            exp = exp + expresion[i]
+    return exp  
