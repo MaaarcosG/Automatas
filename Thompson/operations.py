@@ -128,7 +128,7 @@ def transition_handler(tree, automata):
         a, b = unique_symbol(tree, automata)
     return a, b
 
-# represent . 
+# represent a.a 
 def concatenation(tree, automata):
     # print(tree.left.data)
     if tree.left.data in OPERATORS:
@@ -155,13 +155,14 @@ def union(tree, automata):
     else:
         a, b = unique_symbol(tree.left, automata)
 
+    # add symbol *
     value = Tree()
     value.data = '*'
     value.left = tree.left
+    # print(value.left)
 
     a1, b1 = kleene(value, automata)
     b.transition.append(Handler(EPSILON, a1.name))
-    print(b1)
 
     return a, b1
 
@@ -182,6 +183,11 @@ def symbol_or(tree, automata):
     end = State(len(automata.state), len(automata.state))
     automata.state.append(end)
 
+    '''
+            a --id-->
+    start
+            b --id-->
+    '''
     start.transition.append(Handler(EPSILON, a.name))
     start.transition.append(Handler(EPSILON, a1.name))
     b.transition.append(Handler(EPSILON, end.name))
@@ -193,8 +199,8 @@ def symbol_or(tree, automata):
 def kleene(tree, automata):
     start = State(len(automata.state), len(automata.state))
     automata.state.append(start)
-    # print(automata.state)
 
+    # if found symbol in operators 
     if tree.left.data in OPERATORS:
         a, b = transition_handler(tree.left, automata)
     else:
@@ -202,8 +208,11 @@ def kleene(tree, automata):
     
     end = State(len(automata.state), len(automata.state))
     automata.state.append(end)
+
+    '''
     print('Start %s ' % start)
     print('End %s ' % end)
+    '''
 
     start.transition.append(Handler(EPSILON, a.name))
     start.transition.append(Handler(EPSILON, end.name))
@@ -226,12 +235,23 @@ def symbol_question(tree, automata):
 
     return a, b
 
+# return the state if no have operation 
 def unique_symbol(tree, automata):
-    symbol = tree.data
-    first = State(len(automata.state), len(automata.state))
-    automata.state.append(first)
-    second = State(len(automata.state), len(automata.state))
-    automata.state.append(second)
-    first.transition.append(Handler(symbol, second.id))
+    # first node in state 
+    first_node = State(len(automata.state), len(automata.state))
+    automata.state.append(first_node)
+
+    # second node in state
+    second_node = State(len(automata.state), len(automata.state))
+    automata.state.append(second_node)
+
+    # node 0 --> 1 with tree data 0 --a--> 1 
+    first_node.transition.append(Handler(tree.data, second_node.name))
     
-    return first, second
+    '''
+    print('Symbol %s' % symbol)
+    print('First %s' % first_node)
+    print('Second %s' % second_node)
+    '''
+
+    return first_node, second_node

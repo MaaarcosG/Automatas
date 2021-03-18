@@ -4,6 +4,10 @@ class Automata:
         self.expresion = expresion
         self.state = []
 
+    def __str__(self):
+        string = 'State: ' + str(self.state)
+        return string
+
 class State:
     def __init__(self, name, id):
         self.name = name
@@ -20,7 +24,9 @@ class State:
 
 class Handler:
     def __init__(self, symbol, id):
+        # symbol in the tree
         self.symbol = symbol
+        # id where is go
         self.id = id
 
         

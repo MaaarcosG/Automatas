@@ -1,4 +1,4 @@
-from DFA.dfa import exist_node, add_tree
+from DFA.dfa import movements, add_tree
 from Thompson.nfa import Automata, State, Handler
 from Thompson.tree import Tree
 from DFA_Direct.calculations import lastpos, firstpos, followpos, states_tree
@@ -21,6 +21,7 @@ def sintetic_tree(data_tree, expresion):
     tree = states_tree(value_tree)
     first = firstpos(value_tree)
     last = lastpos(value_tree)
+    # dictionary with the id state of node
     data = {}
     for position in tree:
         data[position] = []
@@ -48,6 +49,7 @@ def direct(first, last, data, expresion):
         if (symbol not in OPERATORS) and (symbol not in symbols) and (symbol != EPSILON):
             symbols.append(symbol)
     
+    # go through the states of the automata
     for state in automata.state:
         for i in symbols:
             value = []
@@ -57,13 +59,16 @@ def direct(first, last, data, expresion):
                     for j in temp:
                         if j not in value:
                             value.append(j)
-            if exist_node(automata, value) and value != []:
+            # if movements, ando no empty
+            if movements(automata, value) and value != []:
                 new_node = State(value, len(automata.state))
                 if last[-1] in value:
                     new_node.accept = True
                 automata.state.append(new_node)
                 state.transition.append(Handler(i, automata.state[-1].id))
+            # if value is emtpy
             elif value != []:
+                # go to tree, and search the id
                 add = add_tree(automata, value)
                 if add:
                     state.transition.append(Handler(i, add.id))

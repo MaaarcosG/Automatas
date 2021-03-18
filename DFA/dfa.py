@@ -38,7 +38,7 @@ def accept_node(tree, state):
     return False
 
 # if exist the node into the tree
-def exist_node(tree, state):
+def movements(tree, state):
     for node in tree.state:
         if Counter(node.name) == Counter(state):
             return False
@@ -70,9 +70,10 @@ def subset(automata, expresion):
                         val.append(transition.id)
             # epsilon lock of movemnt
             epsilon = ecerradura(automata, val)
-            if exist_node(dfa, epsilon) and epsilon != []:
+            if movements(dfa, epsilon) and epsilon != []:
                 new_node_current = State(epsilon, len(dfa.state))
                 dfa.state.append(new_node_current)
+                # verifcate accpet de node
                 if accept_node(automata, epsilon):
                     new_node_current.accept = True
                 node.transition.append(Handler(symbol, dfa.state[-1].id))

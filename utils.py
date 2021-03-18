@@ -2,7 +2,7 @@
     reference to grahipviz https://graphviz.readthedocs.io/en/stable/manual.html
 '''
 from graphviz import Digraph
-from DFA.dfa import get_symbol, EPSILON
+from DFA.dfa import get_symbol, EPSILON, OPERATORS
 
 def graphic(automata, name):
     dot = Digraph(name='Automata')
@@ -70,20 +70,25 @@ def computarizable(expresion):
     for i in range(0, len(expresion)):
         if i == 0:
             exp = exp + expresion[i]
-        elif verificate(expresion[i-1]) and verificate(expresion[i]):
-            exp = exp + '.' + expresion[i]
-        elif verificate(expresion[i-1]) and verificate(expresion) == '(':
-            exp = exp + '.' + expresion[i]
-        elif verificate(expresion[i]) and verificate(expresion[i-1]) == ')':
-            exp = exp + '.' + expresion[i]
-        elif expresion[i-1] == '*' and verificate(expresion[i]):
-            exp = exp + '.' + expresion[i]
-        elif expresion[i-1] == '*' and expresion[i] == '(':
-            exp = exp + '.' + expresion[i]
-        elif expresion[i-1] == ')' and expresion[i] == '(':
-            exp = exp + '.' + expresion[i]
-        elif expresion == '?':
-            exp = exp + '?'
         else:
-            exp = exp + expresion[i]
+            if verificate(expresion[i-1]) and verificate(expresion[i]):
+                exp = exp + '.' + expresion[i]
+            elif verificate(expresion[i-1]) and verificate(expresion) == '(':
+                exp = exp + '.' + expresion[i]
+            elif verificate(expresion[i]) and verificate(expresion[i-1]) == ')':
+                exp = exp + '.' + expresion[i]
+            elif expresion[i-1] == '*' and verificate(expresion[i]):
+                exp = exp + '.' + expresion[i]
+            elif expresion[i-1] == '*' and expresion[i] == '(':
+                exp = exp + '.' + expresion[i]
+            elif expresion[i-1] == ')' and expresion[i] == '(':
+                exp = exp + '.' + expresion[i]
+            elif expresion == '?':
+                exp = exp + '?'
+            elif expresion[i-1] == ')' and (expresion[i] not in OPERATORS):
+                exp = exp + '.' + expresion[i]
+            elif expresion[i-1] == EPSILON:
+                exp = exp + EPSILON + expresion[i]
+            else:
+                exp = exp + expresion[i]
     return exp  
