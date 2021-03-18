@@ -1,8 +1,43 @@
-a 
+Automata Evaluada: (a*|b*).c
+Simbolos del la expresion: a b c 
 
 INICIAL 
+Aceptacion: 0
+ε --> 1
+ε --> 5
 
+Aceptacion: 1
+ε --> 2
+ε --> 4
 
+Aceptacion: 2
+a --> 3
 
+Aceptacion: 3
+ε --> 2
+ε --> 4
 
+Aceptacion: 4
+ε --> 9
 
+Aceptacion: 5
+ε --> 6
+ε --> 8
+
+Aceptacion: 6
+b --> 7
+
+Aceptacion: 7
+ε --> 6
+ε --> 8
+
+Aceptacion: 8
+ε --> 9
+
+Aceptacion: 9
+ε --> 10
+
+Aceptacion: 10
+c --> 11
+
+Aceptacion: 11

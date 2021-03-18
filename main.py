@@ -24,7 +24,7 @@ while True:
         print('CREANDO EL GRAFO....')
         print('CREANDO EL TXT....')
         graphic(automata, 'Thompson')
-        # save_txt(automata, 'Thompson')
+        save_txt(automata, 'Thompson')
         
         ## DEBERIA HACER LA SIMULACION
         expresion_2 = input('Ingrese la expresion que quiere probar: ')

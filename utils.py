@@ -20,13 +20,13 @@ def graphic(automata, name):
     dot.render('Graph/'+name+'.gv', view=True)
 
 def save_txt(automata, name):
-    data_save = open('Text/'+ name + '.txt', 'w+')
-
+    data_save = open('Text/'+ name + '.txt', 'w+', encoding="utf-8")
+    
     data_symbol = get_symbol(automata)
 
-    # data_save.write('Automata Evaluada: ' + str(automata.expresion) + '\n')
-    # data_save.write('Simbolos del la expresion: ')
-    print('Automata Evaluada: %s ' % str(automata.expresion))
+    data_save.write('Automata Evaluada: ' + str(automata.expresion) + '\n')
+    data_save.write('Simbolos del la expresion: ')
+    # print('Automata Evaluada: %s ' % str(automata.expresion))
 
     for symbol in data_symbol:
         data_save.write(symbol + ' ')
@@ -38,15 +38,16 @@ def save_txt(automata, name):
             data_save.write('INICIAL \n')
         if(state.accept):
             data_save.write('')
-        # data_save.write('Aceptacion: ' + str(state.id) + '\n')
-        print('Aceptación: %s' % str(state.id))
+        data_save.write('Aceptacion: ' + str(state.id) + '\n')
+        #print('Aceptación: %s' % str(state.id))
 
         for transition in state.transition:
-            # data_save.write(str(transition.symbol) + '--> ' + str(transition.id) + '\n')
             data = f"{transition.symbol} --> {transition.id}\n"
+            data_save.write(data)
             # if transition.symbol == EPSILON:
                 # data_save.write(str('\u03B5') + '-->' + str(transition.id))
-            print(data)
+            #print(data)
+            
     data_save.close()
         
 def read_file(path='expressions'):
