@@ -1,7 +1,7 @@
 Automata Evaluada: (a*|b*).c
 Simbolos del la expresion: a b c 
 
-INICIAL 
+Nodo Inicial: 0
 Aceptacion: 0
 ε --> 1
 ε --> 5

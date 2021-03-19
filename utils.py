@@ -17,6 +17,7 @@ def graphic(automata, name):
         for transition in state.transition:
             # print(transition.id)
             dot.edge(str(state.id), str(transition.id), transition.symbol)
+            
     dot.render('Graph/'+name+'.gv', view=True)
 
 def save_txt(automata, name):
@@ -28,14 +29,16 @@ def save_txt(automata, name):
     data_save.write('Simbolos del la expresion: ')
     # print('Automata Evaluada: %s ' % str(automata.expresion))
 
+    # reccoremos los simbolos que se encuentren
     for symbol in data_symbol:
         data_save.write(symbol + ' ')
     data_save.write('\n')
 
+    # recorremos los estados que se tienen
     for state in automata.state:
         data_save.write('\n')
         if(state.id == 0):
-            data_save.write('INICIAL \n')
+            data_save.write('Nodo Inicial: ' + str(state.id) + '\n')
         if(state.accept):
             data_save.write('')
         data_save.write('Aceptacion: ' + str(state.id) + '\n')
@@ -92,4 +95,15 @@ def computarizable(expresion):
                 exp = exp + EPSILON + expresion[i]
             else:
                 exp = exp + expresion[i]
-    return exp  
+    return exp 
+
+def error(expresion):
+    # si encuentra un parentesis abierto
+    if '(' in expresion:
+        # si se cierra el parentesis, no hay errores retorna True
+        if (expresion.count('(') == expresion.count(')')):
+            return True
+        else:
+            return False
+    else:
+        return True
