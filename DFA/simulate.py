@@ -19,7 +19,8 @@ def simulate(automata, expresion, alphabeto):
         for node in current_node:
             for transitions in automata.state[node].transition:
                 # si el simbolo se encuentra en la expresion y no en los evaluados, se agrega a la lista
-                if (transitions.symbol == alphabeto[i]) and (transitions.id not in value):
+                # if (transitions.symbol == alphabeto[i]) and (transitions.id not in value):
+                if (transitions.symbol == expresion[i]) and (transitions.id not in value):
                     value.append(transitions.id)
         i += 1
         # tomamos de la lista la nueva cerradura
