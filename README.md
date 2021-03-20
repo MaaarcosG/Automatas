@@ -33,13 +33,13 @@ $ python main.py
 ## Graphics
 
 ### Thompson Algorithm
-![images](Graph\Images\Thompson.PNG)
+![alt text](https://github.com/MaaarcosG/Automatas/blob/main/Graph/Images/Thompson.PNG?raw=true)
 
 ### Subset Construction algorithm 
-![images](Graph\Images\DFA.PNG)
+![alt text](https://github.com/MaaarcosG/Automatas/blob/main/Graph/Images/DFA.PNG?raw=true)
 
 ### AFD Construction algorithm
-![images](Graph\Images\Direct.PNG)
+![alt text](https://github.com/MaaarcosG/Automatas/blob/main/Graph/Images/Direct.PNG?raw=true)
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
