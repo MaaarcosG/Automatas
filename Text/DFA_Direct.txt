@@ -1,18 +1,19 @@
-Automata Evaluada: (a*|b*)c
-Simbolos del la expresion: a b c 
+Automata Evaluada: (a|b)*abb
+Simbolos del la expresion: a b 
 
 Nodo Inicial: 0
 Aceptacion: 0
 a --> 1
-b --> 2
-c --> 3
+b --> 0
 
 Aceptacion: 1
 a --> 1
-c --> 3
+b --> 2
 
 Aceptacion: 2
-b --> 2
-c --> 3
+a --> 1
+b --> 3
 
 Aceptacion: 3
+a --> 1
+b --> 0

@@ -1,7 +1,7 @@
-from DFA.dfa import movements, add_tree
-from Thompson.nfa import Automata, State, Handler
-from Thompson.tree import Tree
+from DFA_Direct.structure import Automata, State, Handler
+from DFA_Direct.tree import Tree
 from DFA_Direct.calculations import lastpos, firstpos, followpos, states_tree
+from collections import Counter
 
 OPERATORS = ['|', '*', '+', '?', '.', ')', '(']
 EPSILON = "ε"
@@ -76,4 +76,17 @@ def direct(first, last, data, expresion):
                     print('There ir no node with %s ' % value)
 
     return automata
+
+# if exist the node into the tree
+def movements(tree, state):
+    for node in tree.state:
+        if Counter(node.name) == Counter(state):
+            return False
+    return True
+
+def add_tree(automata, id):
+    for node in automata.state:
+        if Counter(node.name) == Counter(id):
+            return node
+    return False
     

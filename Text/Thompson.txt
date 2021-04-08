@@ -1,43 +1,10 @@
-Automata Evaluada: (a*|b*).c
-Simbolos del la expresion: a b c 
-
-Nodo Inicial: 0
-Aceptacion: 0
-ε --> 1
-ε --> 5
-
-Aceptacion: 1
-ε --> 2
-ε --> 4
-
-Aceptacion: 2
-a --> 3
-
-Aceptacion: 3
-ε --> 2
-ε --> 4
-
-Aceptacion: 4
-ε --> 9
-
-Aceptacion: 5
-ε --> 6
-ε --> 8
-
-Aceptacion: 6
-b --> 7
-
-Aceptacion: 7
-ε --> 6
-ε --> 8
-
-Aceptacion: 8
-ε --> 9
-
-Aceptacion: 9
-ε --> 10
-
-Aceptacion: 10
-c --> 11
-
-Aceptacion: 11
+Automata Evaluada: ab|*abb...
+=============
+Estados: [2, 3, 7, 4, 5, 6, 10, 8, 12, 14, 15]
+Simbolos: ['a', 'ε', 'b']
+=============
+Estado Inicial: 8
+=============
+Estado Aceptacion: 15
+=============
+Transiciones: [[2, 'a', 3], [3, 'ε', 7], [4, 'b', 5], [5, 'ε', 7], [6, 'ε', 2], [6, 'ε', 4], [7, 'ε', 6], [7, 'ε', 10], [8, 'ε', 6], [8, 'ε', 10], [10, 'a', 12], [12, 'b', 14], [14, 'b', 15]]

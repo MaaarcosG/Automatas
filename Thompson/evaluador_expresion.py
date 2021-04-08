@@ -1,0 +1,284 @@
+'''
+ Reference https://medium.com/swlh/visualizing-thompsons-construction-algorithm-for-nfas-step-by-step-f92ef378581b
+'''
+from DFA_Direct.structure import Automata
+from DFA_Direct.structure import Handler
+from DFA_Direct.structure import State
+from DFA_Direct.tree import Tree
+from DFA_Direct.calculations import OPERATORS
+
+EPSILON = "ε" 
+OPERATORS = ['|', '*', '+', '?', '.', ')', '(']
+SPECIAL = ['*', '+', '?']
+
+# funcion para las predencias de la expresion
+def predence(operation):
+    if (operation == '*'):
+        return 3
+    if (operation == '|'):
+        return 2
+    if (operation == "."):
+        return 1
+    if (operation == "("):
+        return 3
+    else:
+        return 0
+
+# funcion para cambiar de lista a string
+def list_to_string(cadena):
+    expresion = ''
+    for i in range(0, len(cadena)):
+        expresion = expresion + str(cadena[i])
+    return expresion
+
+# funcion para cambiar de string a lista
+def string_to_list(cadena):
+    i = 0
+    expresion = []
+    while (i<len(cadena)):
+        expresion.append(cadena[i])
+        i += 1
+    return expresion
+
+# devuelve las transciones quitando el parentesis
+def flat(l, a):
+    x = []
+    for i in l:
+        if isinstance(i, list):
+            flat(i, a)
+        else:
+            a.append(i)
+
+    for i in range(0,len(a),3):
+        if i != len(a):
+            x.append([a[i],a[i+1],a[i+2]])
+    
+    return x
+
+# cambia la expresion
+# ? = |EPSILON       
+# a+ = aa* 
+def change_data(cadena):
+    stack = []
+    value = []
+    count = 0
+
+    for n in cadena:
+        # si la no es ? o + entonces agrega a la stack lista
+        if n != "?" and n != "+":
+            stack.append(n)
+        # si es ? o +  
+        if n == "?" or n == "+":
+            count += 1
+            # si existe algun parentesis y es ? o + 
+            if (n == "?" and stack[-1] != ")") or (n == "+" and stack[-1] != ")"):
+                count += 1
+                x = True
+                z = len(stack)-1
+                while x == True and z != -1:
+                    # si no es un parentesis o una concatenacion
+                    if stack[z] == ")" or stack[z] == ".":
+                        stack.pop()
+                        x = False
+                    else:
+                        # agrega a nuestra stack lista lo ultimo
+                        value.append(stack[z])
+                        stack.pop()
+                    z-=1
+                # agrega a nuestra lista un str cambiado
+                if n == "?":
+                    count += 1
+                    stack.append(str("("+list_to_string(value[::-1])+"|"+EPSILON+")"))
+                # agrega a nuestra lista un str cambiado
+                elif n == "+":
+                    count +=1
+                    stack.append(str("("+list_to_string(value[::-1])+").("+list_to_string(value[::-1])+"*)"))
+                value = []
+            # else no es un parentesis el ultimo
+            else: 
+                v = len(stack)-1
+                z = True
+                while z == True:
+                    # busca hasta encontrar un parentesis cerrado
+                    if stack[v] == "(" :
+                        value.append("(")
+                        stack.pop()
+                        z = False
+                    else:
+                        # agrega lo cadena hasta encontrar un parentesis
+                        value.append(stack[v])
+                        stack.pop()
+                    v-=1
+                if n == "?":
+                    count +=1
+                    # agrega a nuestra lista un str cambiado
+                    stack.append(str("("+list_to_string(value[::-1])+"|"+EPSILON+")"))
+
+                elif n == "+":
+                    count +=1
+                    # agrega a nuestra lista un str cambiado
+                    stack.append(str("("+list_to_string(value[::-1])+").("+list_to_string(value[::-1])+"*"))
+                value = []
+    i = 0
+    exp = string_to_list(stack)
+    if exp[0] == ".":
+        exp.pop(0)
+    
+    return list_to_string(exp)
+
+def regex(cadena):
+    # operadores validos
+    OPERATORS  = ["|", "*", "."]
+    # stack
+    stack = []
+    # output
+    value = []
+    i = 0
+
+    while i < len(cadena):
+        # Si tenemos un parantesis abierto entonces se ira al stack
+        if cadena[i] == "(":
+            stack.append(cadena[i])
+
+        # Si es un parentesis cerrado entonces saca todo del stack
+        # hasta encontrar un parentesis abierto
+        elif cadena[i] == ")":
+            x = len(stack) - 1
+            while stack[x] != "(":
+                # se agrega el ultimo valor de stack a mi output
+                value.append(stack[x])
+                # se realiza pop del ultimo numero
+                stack.pop()
+                x -= 1
+            # elimina el parentesis abierto
+            stack.pop()
+
+        # Si es un operador entonces se agrega al stack (depende de presedencia)
+        elif cadena[i] in OPERATORS :
+            # Revisa si el stack no esta vacio
+            if len(stack) == 0:
+                stack.append(cadena[i])
+            else:
+                # Si el operador anterior no es un parentesis
+                if stack[-1] != '(':
+                    # Si la precendencia de la cadena es menor a la del stack
+                    if predence(cadena[i]) < predence(stack[-1]):
+                        # Si en el stack solo hay un objeto
+                        z = len(stack) - 1
+                        if z != 0:
+                            # Se saca todo del stack y se agrega el valor nuevo al stack
+                            # se saca todos menos el parentesis
+                            while stack[z] != '(':
+                                value.append(stack[-1])
+                                stack.pop()
+                                z -= 1
+                            stack.append(cadena[i])
+                        else:
+                            # Se saca lo que hay y se agrega el valor nuevo
+                            value.append(stack[-1])
+                            stack.pop()
+                            stack.append(cadena[i])
+                    # si la predence es mayor se agrega al stack
+                    elif predence(cadena[i]) >= predence(stack[-1]):
+                        stack.append(cadena[i])
+                else:
+                    # Si no hay nada solo se agrega al stack
+                    stack.append(cadena[i])
+        # si es un valor se agrega a los valores
+        else:
+            value.append(cadena[i])
+        # contador
+        i += 1
+
+    # Si se termino el ciclo y aun hay cosas en el stack entonces las saca
+    if len(stack) != 0:
+        for i in range(len(stack)):
+            value.append(stack[-1])
+            stack.pop()
+    return value
+
+def regex_tree(expresion):
+    values = []
+    operation = []
+    # counter
+    i = 0
+    while (i < len(expresion)):
+        # there is space
+        if (expresion[i] == ' '):
+            i += 1
+            continue
+        # there is open parentesis
+        elif (expresion[i] == "("):
+            operation.append(expresion[i])
+        
+        elif (expresion[i] not in OPERATORS):
+            val = ""
+            while (i < len(expresion)) and expresion[i] not in OPERATORS:
+                val = str(val) + expresion[i]
+                i -= -1
+            # take the class of tree
+            tree = Tree()
+            tree.data = val
+            # append to list data of the tree
+            values.append(tree)
+            i -= 1
+            
+        # there is close parentesis
+        elif expresion[i] == ")":
+            while len(operation) != 0 and operation[-1] != "(":
+                val2 = values.pop()
+                val1 = values.pop()
+                op = operation.pop()
+                # take the class of tree
+                tree = Tree()
+                tree.data = op
+                tree.left = val1
+                tree.right = val2
+                # add the data to list
+                values.append(tree)
+            operation.pop()
+
+        # expresion[i] == '('
+        else:
+            if (expresion[i] in SPECIAL):
+                op = expresion[i]
+                val = values.pop()
+                # take the class of tree
+                tree = Tree()
+                tree.data = op
+                tree.left = val
+                tree.right = None
+                # add the data to list
+                values.append(tree)
+            else:
+                while (len(operation) != 0  and operation[-1] != '('):
+                    op = operation.pop()
+                    val2 = values.pop()
+                    val1 = values.pop()
+                    # take the class of tree
+                    tree = Tree()
+                    tree.data = op
+                    tree.left = val1
+                    tree.right = val2
+                    # add the data to list
+                    values.append(tree)
+                operation.append(expresion[i])
+        
+        i -= -1
+    
+    # if no empty the list 
+    while(len(operation) != 0):
+        val2 = values.pop()
+        val1 = values.pop()
+        op = operation.pop()
+        # take the class of tree
+        tree = Tree()
+        tree.data = op
+        tree.left = val1
+        tree.right = val2
+        # add the data to list
+        values.append(tree)
+        if (len(values) == 1):
+            return values[-1]
+
+    return values[-1]
