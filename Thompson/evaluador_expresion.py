@@ -64,59 +64,47 @@ def change_data(cadena):
     count = 0
 
     for n in cadena:
-        # si la no es ? o + entonces agrega a la stack lista
         if n != "?" and n != "+":
-            stack.append(n)
-        # si es ? o +  
+            stack.append(n)  
         if n == "?" or n == "+":
             count += 1
-            # si existe algun parentesis y es ? o + 
             if (n == "?" and stack[-1] != ")") or (n == "+" and stack[-1] != ")"):
                 count += 1
                 x = True
                 z = len(stack)-1
                 while x == True and z != -1:
-                    # si no es un parentesis o una concatenacion
                     if stack[z] == ")" or stack[z] == ".":
                         stack.pop()
                         x = False
                     else:
-                        # agrega a nuestra stack lista lo ultimo
                         value.append(stack[z])
                         stack.pop()
                     z-=1
-                # agrega a nuestra lista un str cambiado
                 if n == "?":
                     count += 1
                     stack.append(str("("+list_to_string(value[::-1])+"|"+EPSILON+")"))
-                # agrega a nuestra lista un str cambiado
                 elif n == "+":
                     count +=1
                     stack.append(str("("+list_to_string(value[::-1])+").("+list_to_string(value[::-1])+"*)"))
                 value = []
-            # else no es un parentesis el ultimo
             else: 
                 v = len(stack)-1
                 z = True
                 while z == True:
-                    # busca hasta encontrar un parentesis cerrado
                     if stack[v] == "(" :
                         value.append("(")
                         stack.pop()
                         z = False
                     else:
-                        # agrega lo cadena hasta encontrar un parentesis
                         value.append(stack[v])
                         stack.pop()
                     v-=1
                 if n == "?":
                     count +=1
-                    # agrega a nuestra lista un str cambiado
                     stack.append(str("("+list_to_string(value[::-1])+"|"+EPSILON+")"))
 
                 elif n == "+":
                     count +=1
-                    # agrega a nuestra lista un str cambiado
                     stack.append(str("("+list_to_string(value[::-1])+").("+list_to_string(value[::-1])+"*"))
                 value = []
     i = 0
