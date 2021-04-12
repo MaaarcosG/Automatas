@@ -124,61 +124,43 @@ def regex(cadena):
     i = 0
 
     while i < len(cadena):
-        # Si tenemos un parantesis abierto entonces se ira al stack
         if cadena[i] == "(":
             stack.append(cadena[i])
 
-        # Si es un parentesis cerrado entonces saca todo del stack
-        # hasta encontrar un parentesis abierto
         elif cadena[i] == ")":
             x = len(stack) - 1
             while stack[x] != "(":
-                # se agrega el ultimo valor de stack a mi output
                 value.append(stack[x])
-                # se realiza pop del ultimo numero
                 stack.pop()
                 x -= 1
-            # elimina el parentesis abierto
             stack.pop()
 
-        # Si es un operador entonces se agrega al stack (depende de presedencia)
         elif cadena[i] in OPERATORS :
-            # Revisa si el stack no esta vacio
             if len(stack) == 0:
                 stack.append(cadena[i])
             else:
-                # Si el operador anterior no es un parentesis
                 if stack[-1] != '(':
-                    # Si la precendencia de la cadena es menor a la del stack
                     if predence(cadena[i]) < predence(stack[-1]):
-                        # Si en el stack solo hay un objeto
                         z = len(stack) - 1
                         if z != 0:
-                            # Se saca todo del stack y se agrega el valor nuevo al stack
-                            # se saca todos menos el parentesis
                             while stack[z] != '(':
                                 value.append(stack[-1])
                                 stack.pop()
                                 z -= 1
                             stack.append(cadena[i])
                         else:
-                            # Se saca lo que hay y se agrega el valor nuevo
                             value.append(stack[-1])
                             stack.pop()
                             stack.append(cadena[i])
-                    # si la predence es mayor se agrega al stack
                     elif predence(cadena[i]) >= predence(stack[-1]):
                         stack.append(cadena[i])
                 else:
-                    # Si no hay nada solo se agrega al stack
                     stack.append(cadena[i])
-        # si es un valor se agrega a los valores
         else:
             value.append(cadena[i])
         # contador
         i += 1
 
-    # Si se termino el ciclo y aun hay cosas en el stack entonces las saca
     if len(stack) != 0:
         for i in range(len(stack)):
             value.append(stack[-1])

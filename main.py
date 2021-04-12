@@ -1,4 +1,4 @@
-from utils import graphic, save_txt, graphic_tree, save_txt_tree, computarizable, error
+from utils import graphic, save_txt, graphic_tree, save_txt_tree, computarizable, error, EPSILON
 from Thompson.evaluador_expresion import change_data, regex, regex_tree
 from Thompson.operations import get_operation, delete_parentesis
 from DFA.dfa import subset
